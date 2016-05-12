@@ -156,7 +156,8 @@ syn keyword pythonStatement     pass raise
 syn keyword pythonStatement     global assert
 syn keyword pythonStatement     lambda
 syn keyword pythonStatement     with
-syn keyword pythonStatement     def class nextgroup=pythonFunction skipwhite
+syn keyword pythonDefClass      def class nextgroup=pythonFunction skipwhite
+syn keyword pythonSelf          self cls mcs
 syn keyword pythonRepeat        for while
 syn keyword pythonConditional   if elif else
 " The standard pyrex.vim unconditionally removes the pythonInclude group, so
@@ -165,6 +166,10 @@ syn keyword pythonInclude       import
 syn keyword pythonImport        import
 syn keyword pythonException     try except finally
 syn keyword pythonOperator      and in is not or
+syn match pythonExtraOperator "\%([~!^&|/%+-]\|\%(class\s*\)\@<!<<\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|>>\|>=\|=\@<!>\|\.\.\.\|\.\.\|::\)"
+syn match pythonExtraPseudoOperator "\%(-=\|/=\|\*\*=\|\*=\|&&=\|&=\|&&\|||=\||=\|||\|%=\|+=\|!\~\|!=\)"
+syn match pythonExtraOperator   "\%(=\)"
+syn match pythonExtraOperator "\%(\*\|\*\*\)"
 
 syn match pythonStatement   "\<yield\>" display
 syn match pythonImport      "\<from\>" display
@@ -190,7 +195,7 @@ endif
 " Decorators (new in Python 2.4)
 "
 
-syn match   pythonDecorator	"@" display nextgroup=pythonDottedName skipwhite
+syn match   pythonDecorator	"^\s*\zs@" display nextgroup=pythonDottedName skipwhite
 if s:Python2Syntax()
   syn match   pythonDottedName "[a-zA-Z_][a-zA-Z0-9_]*\%(\.[a-zA-Z_][a-zA-Z0-9_]*\)*" display contained
 else
@@ -502,7 +507,10 @@ if version >= 508 || !exists("did_python_syn_inits")
   HiLink pythonRepeat           Repeat
   HiLink pythonException        Exception
   HiLink pythonOperator         Operator
-
+  HiLink pythonExtraOperator    Operator
+  HiLink pythonExtraPseudoOperator    Operator
+  HiLink pythonDefClass         Statement
+  HiLink pythonSelf             Identifier
   HiLink pythonDecorator        Define
   HiLink pythonDottedName       Function
   HiLink pythonDot              Normal
